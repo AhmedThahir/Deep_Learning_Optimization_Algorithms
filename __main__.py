@@ -1,6 +1,8 @@
 import pandas as pd
 import streamlit as st
 
+import plotly.express as px
+
 def plot_summary(df, y, percentage=False):
     df = df.copy()
     
@@ -27,6 +29,8 @@ def plot_summary(df, y, percentage=False):
         data_frame=df,
         x=x,
         y=y,
+        facet_col="Learning_Rate",
+        facet_row="Train_Size",
         color = c,
         title = title,
         range_x = [df[x].values.min(), df[x].values.max()],
@@ -45,6 +49,7 @@ def plot_summary(df, y, percentage=False):
         }
     )
     fig.update_traces(connectgaps=True) # required for connecting dev accuracies
+    st.plotly_chart(fig, use_container_width=True)
  
     return fig
 
@@ -53,6 +58,9 @@ def get_summary():
     return pd.read_csv("summary.csv")
 
 def main():
+    st.set_page_config(
+        layout = "wide"
+    )
     summary = get_summary()
     
     menu_options = [

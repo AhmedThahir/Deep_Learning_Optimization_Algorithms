@@ -55,18 +55,28 @@ def get_summary():
 def main():
     summary = get_summary()
     
-    plot_summary(
-        summary,
-        "Loss_mean_Train"
-    )
-    # plot_summary(
-    #     summary,
-    #     "Loss_mean_Dev"
-    # )
-    # plot_summary(
-    #     summary,
-    #     "Generalization_Gap"
-    # )
+    menu_options = [
+        "Loss_mean_Train",
+        "Loss_mean_Dev",
+        "Generalization_Gap",
+    ]
+    
+    with st.sidebar:
+        menu_selected = st.radio(
+            "Visualization",
+            menu_options
+        )
+    
+    for option in menu_options:
+        if menu_selected == option:
+            if menu_selected == "Generalization_Gap":
+                summary["Generalization_Gap"] = summary["Loss_mean_Dev"] - summary["Loss_mean_Train"]
+                
+            plot_summary(
+                summary,
+                option
+            )
+    
     return
 
 if __name__ == "__main__":
